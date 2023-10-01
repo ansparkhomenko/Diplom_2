@@ -9,7 +9,8 @@ import io.restassured.specification.RequestSpecification;
 import static io.restassured.RestAssured.given;
 
 public class OrderServiceApi {
-    private final String URL = "https://stellarburgers.nomoreparties.site";
+    private static final String URL = "https://stellarburgers.nomoreparties.site";
+    private static final String ORDERS_ENDPOINT = "/api/orders";
     public RequestSpecification requestSpec = new RequestSpecBuilder()
             .setContentType(ContentType.JSON)
             .setBaseUri(URL)
@@ -20,7 +21,7 @@ public class OrderServiceApi {
         return given()
                 .spec(requestSpec)
                 .body(orderData)
-                .post("/api/orders");
+                .post(ORDERS_ENDPOINT);
     }
 
     @Step("Создание заказа c авторизацией")
@@ -29,14 +30,14 @@ public class OrderServiceApi {
                 .header("authorization", accessToken)
                 .spec(requestSpec)
                 .body(orderData)
-                .post("/api/orders/");
+                .post(ORDERS_ENDPOINT);
     }
 
     @Step("Получение заказа пользователя без авторизации")
     public Response getUserOrder() {
         return given()
                 .spec(requestSpec)
-                .get("/api/orders");
+                .get(ORDERS_ENDPOINT);
     }
 
     @Step("Получение заказа пользователя с авторизацией")
@@ -44,6 +45,6 @@ public class OrderServiceApi {
         return given()
                 .header("authorization", accessToken)
                 .spec(requestSpec)
-                .get("/api/orders");
+                .get(ORDERS_ENDPOINT);
     }
 }

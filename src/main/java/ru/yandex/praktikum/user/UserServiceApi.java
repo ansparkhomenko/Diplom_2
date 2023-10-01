@@ -9,7 +9,10 @@ import io.restassured.specification.RequestSpecification;
 import static io.restassured.RestAssured.given;
 
 public class UserServiceApi {
-    private final String URL = "https://stellarburgers.nomoreparties.site";
+    private static final String URL = "https://stellarburgers.nomoreparties.site";
+    private static final String REGISTER_USER_ENDPOINT = "/api/auth/register";
+    private static final String LOGIN_USER_ENDPOINT = "/api/auth/login";
+    private static final String DELETE_AND_UPDATE_USER_ENDPOINT = "/api/auth/user";
     private RequestSpecification requestSpec = new RequestSpecBuilder()
             .setContentType(ContentType.JSON)
             .setBaseUri(URL)
@@ -20,7 +23,7 @@ public class UserServiceApi {
         return given()
                 .spec(requestSpec)
                 .body(user)
-                .post("/api/auth/register");
+                .post(REGISTER_USER_ENDPOINT);
     }
 
     @Step("Логин пользователя")
@@ -28,7 +31,7 @@ public class UserServiceApi {
         return given()
                 .spec(requestSpec)
                 .body(user)
-                .post("/api/auth/login");
+                .post(LOGIN_USER_ENDPOINT);
     }
 
     @Step("Удаление пользователя")
@@ -36,7 +39,7 @@ public class UserServiceApi {
         return given()
                 .header("authorization", accessToken)
                 .spec(requestSpec)
-                .delete("/api/auth/user");
+                .delete(DELETE_AND_UPDATE_USER_ENDPOINT);
     }
     @Step("Обновление данных о пользователе с авторизацией")
     public Response updateUserWithToken(UserData user, String accessToken){
@@ -44,7 +47,7 @@ public class UserServiceApi {
                 .header("authorization", accessToken)
                 .spec(requestSpec)
                 .body(user)
-                .patch("/api/auth/user");
+                .patch(DELETE_AND_UPDATE_USER_ENDPOINT);
 
     }
     @Step("Обновление данных о пользователе без авторизации")
@@ -52,7 +55,7 @@ public class UserServiceApi {
         return given()
                 .spec(requestSpec)
                 .body(user)
-                .patch("/api/auth/user");
+                .patch(DELETE_AND_UPDATE_USER_ENDPOINT);
 
     }
 }
