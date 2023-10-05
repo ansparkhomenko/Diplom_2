@@ -15,11 +15,12 @@ public class LoginUserTest {
     private UserServiceApi userServiceApi = new UserServiceApi();
     private Response response;
 
+
     @Test
     @DisplayName("Авторизация зарегистрированного пользователя")
     @Description("Успешная авторизация пользователя")
     public void authenticateUser() {
-        user = UserHelper.getDefaultUser();
+        user = UserHelper.getUniqueUser();
         response = userServiceApi.registerUser(user);
         response = userServiceApi.loginUser(user);
         response.then()
@@ -33,8 +34,7 @@ public class LoginUserTest {
     @DisplayName("Авторизация не зарегистрированного пользователя")
     @Description("Не успешная авторизация")
     public void authenticateNotExistentUser() {
-        String email = UserHelper.generateUniqueEmail();
-        user = new UserData(email, "qwe123", "John");
+        user = UserHelper.getUniqueUser();
         response = userServiceApi.loginUser(user);
         response.then()
                 .log().all()

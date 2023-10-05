@@ -21,7 +21,7 @@ public class UpdateUserTest {
 
     @Before
     public void init() {
-        user = UserHelper.getDefaultUser();
+        user = UserHelper.getUniqueUser();
         createdUser = userServiceApi.registerUser(user);
         accessToken = userServiceApi.loginUser(user)
                 .then()

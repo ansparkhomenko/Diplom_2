@@ -18,8 +18,7 @@ public class RegisterUserTest {
     @DisplayName("Регистрация нового пользователя")
     @Description("Успешная регистрация")
     public void registerUser() {
-        String email = UserHelper.generateUniqueEmail();
-        user = new UserData(email, "qwe123", "Toni");
+        user = UserHelper.getUniqueUser();
         response = userServiceApi.registerUser(user);
         response.then()
                 .log().all()
@@ -32,7 +31,7 @@ public class RegisterUserTest {
     @DisplayName("Регистрация уже зарегистрированного пользователя")
     @Description("Неуспешная регистрация")
     public void registerExistingUser() {
-        user = UserHelper.getDefaultUser();
+        user = UserHelper.getUniqueUser();
         userServiceApi.registerUser(user);
         response = userServiceApi.registerUser(user);
         response.then()

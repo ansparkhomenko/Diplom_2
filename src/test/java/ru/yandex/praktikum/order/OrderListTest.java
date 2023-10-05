@@ -1,6 +1,6 @@
 package ru.yandex.praktikum.order;
 
-import core.IngredientListHelper;
+import core.OrderHelper;
 import core.UserHelper;
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
@@ -23,14 +23,20 @@ public class OrderListTest {
     private OrderServiceApi orderServiceApi = new OrderServiceApi();
     private String accessToken;
     private OrderData orderData;
+    private List<String> ingredients;
 
     @Before
     public void init() {
-        user = UserHelper.getDefaultUser();
+        user = UserHelper.getUniqueUser();
         userServiceApi.registerUser(user);
         accessToken = userServiceApi.loginUser(user).then().extract().path("accessToken");
-        List<String> ingredients = IngredientListHelper.createDefaultIngredientList();
-        orderData = new OrderData(ingredients);
+
+        ingredients = orderServiceApi.getIngredients()
+                .then().extract().response()
+                .jsonPath().get("data._id");
+        ingredients = OrderHelper.addIngredientsToList(ingredients, 5);
+
+        orderData = OrderHelper.createOrderWithIngredients(ingredients);
         orderServiceApi.createOrderWithAuth(orderData, accessToken);
     }
 

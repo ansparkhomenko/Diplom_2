@@ -11,6 +11,7 @@ import static io.restassured.RestAssured.given;
 public class OrderServiceApi {
     private static final String URL = "https://stellarburgers.nomoreparties.site";
     private static final String ORDERS_ENDPOINT = "/api/orders";
+    private static final String INGREDIENTS_ENDPOINT = "/api/ingredients";
     public RequestSpecification requestSpec = new RequestSpecBuilder()
             .setContentType(ContentType.JSON)
             .setBaseUri(URL)
@@ -46,5 +47,12 @@ public class OrderServiceApi {
                 .header("authorization", accessToken)
                 .spec(requestSpec)
                 .get(ORDERS_ENDPOINT);
+    }
+
+    @Step("Получение списка ингридиентов")
+    public Response getIngredients() {
+        return given()
+                .spec(requestSpec)
+                .get(INGREDIENTS_ENDPOINT);
     }
 }
